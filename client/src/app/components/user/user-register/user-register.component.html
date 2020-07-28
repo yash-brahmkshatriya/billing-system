@@ -1,0 +1,131 @@
+<div style="background-color: #ecf3f3;">
+  <div class="container" >
+    <div class="row py-5 align-items-center">
+      <div class="col-md-7 col-lg-6 mr-auto">
+        <h1 class="display-4" style="font-weight: 500;">Create Your Account</h1>
+        <form [formGroup]="signupform" (ngSubmit)="onSubmit()">
+          <label for="Name" class="heading">Name</label>
+          <div class="form-row">
+            <div class="form-group col-md-5">
+              <input formControlName="pfname" class="form-control" placeholder="First name" type="text" [ngClass]="{'is-invalid':pfname.invalid && (pfname.dirty || pfname.touched)}" >
+              <span class="invalid-feedback" *ngIf="pfname.invalid && (pfname.dirty || pfname.touched)">
+                <p>First Name is required.</p>
+              </span>
+            </div>
+            <div class="form-group col-md-7">
+              <input formControlName="plname" class="form-control" placeholder="Last name" type="text" [ngClass]="{'is-invalid':plname.invalid && (plname.dirty || plname.touched)}">
+              <span class="invalid-feedback" *ngIf="plname.invalid && (plname.dirty || plname.touched)">
+                <p>Last Name is required.</p>
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="company_name" class="heading">Company Name</label>
+            <input formControlName="company_name" type="text" class="form-control" placeholder="eg. Google Inc." [ngClass]="{'is-invalid':company_name.invalid && (company_name.dirty || company_name.touched)}">
+            <span class="invalid-feedback" *ngIf="company_name.invalid && (company_name.dirty || company_name.touched)">
+              <p *ngIf="company_name.errors?.required">Company Name is required.</p>
+              <p *ngIf="company_name.errors?.maxlength">Company Name must be at most 50 characters long.</p>
+            </span>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="email" class="heading">Email ID</label>
+              <input formControlName="email" type="email" class="form-control" placeholder="eg. abc@gmail.com" [ngClass]="{'is-invalid':email.invalid && (email.dirty || email.touched)}">
+              <span class="invalid-feedback" *ngIf="email.invalid && (email.dirty || email.touched)">
+                <p *ngIf="email.errors?.required">Email ID is required.</p>
+                <p *ngIf="!email.errors?.required && email.invalid">Invalid Email ID.</p>
+              </span>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="password" class="heading">Password</label>
+              <input formControlName="password" type="password" class="form-control" [ngClass]="{'is-invalid':password.invalid && (password.dirty || password.touched)}">
+              <span class="invalid-feedback" *ngIf="password.invalid && (password.dirty || password.touched)">
+                <p *ngIf="password.errors?.required">Password is required</p>
+                <p *ngIf="password.errors?.maxlength || password.errors?.minlength">Password must be 8 to 255 characters long.</p>
+              </span>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="country_code" class="heading">Country Code</label>
+              <input type="text" class="form-control" value="+91" disabled>
+            </div>
+            <div class="form-group col-md-9">
+              <label for="phn_no" class="heading">Contact Number</label>
+              <input formControlName="phn_no" type="text" class="form-control" placeholder="eg. 9876543210" [ngClass]="{'is-invalid':phn_no.invalid && (phn_no.dirty || phn_no.touched)}">
+              <span class="invalid-feedback" *ngIf="phn_no.invalid && (phn_no.dirty || phn_no.touched)">
+                <p *ngIf="phn_no.errors?.required">Phone Number is required.</p>
+                <p *ngIf="phn_no.errors?.pattern">Phone number must only contain numeric digits.</p>
+                <p *ngIf="!phn_no.errors?.pattern && (phn_no.errors?.maxlength || phn_no.errors?.minlength)">Phone Number must be 10 digits long.</p>
+              </span>
+            </div>
+          </div>
+          <div formGroupName="address">
+            <div class="form-row">
+              <div class="form-group col-md-5">
+                <label for="inputCity" class="heading">Place</label>
+                <input type="text" class="form-control" formControlName="place_no" placeholder="eg. A-1234, Pramukh Arcade" [ngClass]="{'is-invalid':place_no.invalid && (place_no.dirty || place_no.touched)}">
+                <span class="invalid-feedback" *ngIf="place_no.invalid && (place_no.dirty || place_no.touched)">
+                    <p *ngIf="place_no.errors?.required">Place No. is required.</p>
+                    <p *ngIf="place_no.errors?.maxlength">Place No. must be at most 50 characters long.</p>
+                </span>
+              </div>
+              <div class="form-group col-md-7">
+                <label for="inputState" class="heading">Street</label>
+                <input type="text" class="form-control" formControlName="street" placeholder="eg. Near Reliance Circle" [ngClass]="{'is-invalid':street.invalid && (street.dirty || street.touched)}">
+                <span class="invalid-feedback" *ngIf="street.invalid && (street.dirty || street.touched)">
+                  <p *ngIf="street.errors?.maxlength">Street must be at most 50 characters long.</p>
+                </span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputZip" class="heading">Landmark</label>
+                <input type="text" class="form-control" formControlName="locality" placeholder="eg. Kudasan" [ngClass]="{'is-invalid':locality.invalid && (locality.dirty || locality.touched)}">
+                <span class="invalid-feedback" *ngIf="locality.invalid && (locality.dirty || locality.touched)">
+                  <p *ngIf="locality.errors?.required">Landmark is required.</p>
+                  <p *ngIf="locality.errors?.maxlength">Landmark must be at most 50 characters long.</p>
+                </span>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputCity" class="heading">City</label>
+                <input type="text" class="form-control" formControlName="city" placeholder="eg. Gandhinagar" [ngClass]="{'is-invalid':city.invalid && (city.dirty || city.touched)}">
+                <span class="invalid-feedback" *ngIf="city.invalid && (city.dirty || city.touched)">
+                  <p *ngIf="city.errors?.required">City is required.</p>
+                  <p *ngIf="city.errors?.maxlength">City must be at most 50 characters long.</p>
+                </span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputState" class="heading">State</label>
+                <input type="text" class="form-control" formControlName="state" placeholder="Gujarat" [ngClass]="{'is-invalid':state.invalid && (state.dirty || state.touched)}">
+                <span class="invalid-feedback" *ngIf="state.invalid && (state.dirty || state.touched)" >
+                  <p *ngIf="state.errors?.required">State is required.</p>
+                  <p *ngIf="state.errors?.maxlength">State must be at most 50 characters long.</p>
+                </span>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputZip" class="heading">Zip</label>
+                <input type="text" class="form-control" formControlName="pincode" placeholder="123456" [ngClass]="{'is-invalid':pincode.invalid && (pincode.dirty || pincode.touched)}">
+                <span class="invalid-feedback" *ngIf="pincode.invalid && (pincode.dirty || pincode.touched)" >
+                  <p *ngIf="pincode.errors?.required">Pincode is required.</p>
+                  <p *ngIf="pincode.errors?.pattern">Pincode must contain digits only.</p>
+                  <p *ngIf="!pincode.errors?.pattern && (pincode.errors?.maxlength || pincode.errors?.minlength)">Pincode must be 6 digits long.</p>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="btn-grp" style="width:100%">
+            <button type="submit" class="btn btn-dark mt-2 mr-5 w-100" [disabled]="disableBtn">Register</button>
+          </div>
+          <flash-messages></flash-messages>
+        </form>
+      </div>
+      <div class="col-md-5 pr-lg-5 mb-5 mb-md-0">
+        <img src="/assets/imgs/new_acc.svg" alt="" class="img-fluid mb-3 d-none d-md-block">
+      </div>
+    </div>
+  </div>
+</div>

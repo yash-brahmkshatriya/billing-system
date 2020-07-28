@@ -1,0 +1,182 @@
+<div class="container loading" *ngIf="loading">
+  <img src="assets/imgs/loadinggif1.gif" class="loadinggif">
+  <div class="display-4" style="font-size: x-large;">
+    Loading... Please Wait
+  </div>
+</div>
+<div class="card mt-5 ml-4 mr-4 mb-5">
+  <div class="card-header">
+    <h1 class="display-4">Create Bill</h1>
+  </div>
+  <div class="card-body" *ngIf="!loading">
+    <div>
+      <form [formGroup]="billForm" (ngSubmit)="onsubmit()">
+        <!-- < PARTY NAME > -->
+        <div class="form-group">
+          <label for="party_name" class="heading">Party Name</label>
+          <input type="text" formControlName="party_name" class="form-control" placeholder="Bill given to" [ngClass]="{'is-invalid':party_name.invalid && (party_name.dirty || party_name.touched)}">
+          <span class="invalid-feedback" *ngIf="party_name.invalid && (party_name.dirty || party_name.touched)">
+            <p *ngIf="party_name.errors?.required">Party Name is required.</p>
+            <p *ngIf="party_name.errors?.maxlength">Party Name must be at most 255 characters long.</p>
+          </span>
+        </div>
+        
+        <!-- < Various Numbers and Dates > -->
+        <div class="form-row">
+          <div class="form-row col-md-4" formGroupName="bill">
+            <div class="form-group col-md-5">
+              <label for="bill_no" class="heading">Bill No.</label>
+              <input type="number" formControlName="num" class="form-control" placeholder="Bill Number" disabled>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="bill_date" class="heading">Bill Date</label>
+              <input type="date" formControlName="date" class="form-control">
+            </div>
+            <div class="col-md-1"></div>
+          </div>
+          <div class="form-row col-md-4" formGroupName="dc">
+            <div class="form-group col-md-5">
+              <label for="dc_no" class="heading">DC No.</label>
+              <input type="number" formControlName="num" class="form-control" placeholder="DC Number" disabled>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="dc_date" class="heading">DC Date</label>
+              <input type="date" formControlName="date" class="form-control">
+            </div>
+            <div class="col-md-1"></div>
+          </div>
+          <div class="form-row col-md-4" formGroupName="po">
+            <div class="form-group col-md-5">
+              <label for="dc_no" class="heading">PO No.</label>
+              <input type="number" formControlName="num" class="form-control" placeholder="PO Number">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="dc_date" class="heading">PO Date</label>
+              <input type="date" formControlName="date" class="form-control">
+            </div>
+            <div class="col-md-1"></div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-10">
+            <span class="h6">
+              Any Discount ?
+            </span>
+            <label class="switch">
+              <input type="checkbox" (click)="toggleDiscount()">
+              <span class="slider round">
+              </span>
+            </label>
+          </div>
+          <div class="col-2" *ngIf="discountGiven">
+            <label for="discount" class="heading">Discount %</label>
+            <input type="text" formControlName="discountPct" class="form-control" [ngClass]="{'is-invalid':discountPct.invalid && (discountPct.touched || discountPct.dirty)}">
+            <span class="invalid-feedback" *ngIf="discountPct.invalid && (discountPct.touched || discountPct.dirty)">
+              <p *ngIf="discountPct.errors?.pattern;else pctRange">Only digits Allowed</p>
+              <ng-template #pctRange>
+                <p *ngIf="discountPct.errors?.max || discountPct.errors?.min">Must be between 0 & 100</p>
+              </ng-template>
+            </span>
+          </div>
+        </div>
+        <hr>
+        <h1 class="display-4" style="font-size: 36px;font-weight: 400;">Items</h1>
+        <table class="table table-stripped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Description</th>
+              <th scope="col">Qty</th>
+              <th scope="col">Rate</th>
+              <th scope="col">Amount</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody formArrayName="items" *ngFor="let item of billForm.get('items')['controls'];let i = index;">
+            <tr [formGroupName]="i">
+              <th scope="row" class="heading">{{i+1}}</th>
+              <td style="width: 61%;">
+                <input type="text" formControlName="description" class="form-control">
+                <!-- <span class="invalid-feedback" *ngIf="billform.items[i].description.invalid && (billform.items[i].description.touched || billform.items[i].description.dirty)">
+                  <p *ngIf="billform.items[i].description.errors?.required">Description is required.</p>
+                </span> -->
+              </td>
+              <td style="width: 13%;">
+                <input type="number" formControlName="qty" class="form-control">
+              </td>
+              <td style="width: 13%;">
+                <input type="number" formControlName="rate" class="form-control">
+              </td>
+              <td style="width: 13%;">
+                <input type="number" formControlName="amt" class="form-control" disabled>
+              </td>
+              <td >
+                <button type="button" class="btn btn-outline-danger" (click)="removeItem(i)">Remove</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <hr>
+        <div class="row">
+          <div class="col-8"></div>
+          <div class="col-4">
+            <div class="row">
+              <div class="col" style="text-align: end;">
+                <span class="h4">Total Amount: </span>
+              </div>
+              <div class="col">
+                <span class="amtcss">{{billform.total_amt.value}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="discountGiven" class="row">
+          <div class="col-8"></div>
+          <div class="col-4">
+            <div class="row">
+              <div class="col" style="text-align: end;">
+                <span class="h4">Disc Price: </span>
+              </div>
+              <div class="col">
+                <span class="amtcss">{{billform.disctotal.value}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-8"></div>
+          <div class="col-4">
+            <div class="row">
+              <div class="col" style="text-align: end;">
+                <span class="h4">Round Off: </span>
+              </div>
+              <div class="col">
+                <span class="amtcss" *ngIf="billform.roundoff.value>0">+</span>
+                <span class="amtcss">{{billform.roundoff.value}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-8"></div>
+          <div class="col-4">
+            <div class="row">
+              <div class="col" style="text-align: end;">
+                <span class="h4">Grand Total: </span>
+              </div>
+              <div class="col">
+                <span class="amtcss">{{billform.grand_total.value}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <button type="button" class="btn btn-outline-primary btn-lg mr-3" (click)="addItem()">Add Item</button>
+        <button type="submit" class="btn btn-success btn-lg mr-3" [disabled]="disableBtn">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>

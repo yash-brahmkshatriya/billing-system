@@ -1,0 +1,29 @@
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.fa {
+    font-size: xx-large;
+}
+.btn {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+}
+.cntCircle {
+    border: 16px solid #c2bf00; 
+    border-radius: 50%;
+    width: 350px;
+    height: 350px;
+    font-size: 30px;
+    text-align: center;
+}
+.cnt {
+    color: #ad0000 !important;
+    font-weight: bold !important;
+}
+.dash-container{
+    padding: 7%;
+    min-height: 85vh;
+}

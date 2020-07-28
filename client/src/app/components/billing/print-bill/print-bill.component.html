@@ -1,0 +1,257 @@
+<div class="container loading" *ngIf="loadingBill || loadingProfile">
+  <img src="assets/imgs/loadinggif1.gif" class="loadinggif">
+  <div class="display-4" style="font-size: x-large;">
+    Loading... Please Wait
+  </div>
+</div>
+<div style="background-color:white;padding: 5px;">
+  <div class="container mt-4 ml-4 mb-5" *ngIf="!loadingBill && !loadingProfile">
+    <table class="table table-bordered" style="margin-left:5%;">
+      <thead style="text-align: center;">
+        <tr>
+          <th colspan="5" class="display-4 companyname" >{{userDet.company_name}}</th>
+        </tr>
+        <tr>
+          <td colspan="3" class="addphn">
+            {{userDet.addressString}} 
+          </td>
+          <td colspan="2" class="h5">
+            M : {{userDet.phn_no}}
+          </td>
+        </tr>
+        <tr>
+          <th colspan="5">
+            <div class="row">
+              <div class="col-md-6 billheading" style="text-align: end;">BILL</div>
+              <div class="col-md-6 copyheading" style="text-align: end;">Original Copy</div>
+            </div>
+          </th>
+        </tr>
+        <tr>
+          <td colspan="2" style="text-align: left;">
+            <div style="font-size: large;"><span class="h5">M/s </span>{{currBill.party_name}}</div>
+          </td>
+          <td colspan="3" style="text-align: left;">
+            <div>
+              <div class="row">
+                <div class="col-md-7">
+                  <span class="h6">Bill No. : </span>{{ currBill.bill.num}}
+                </div>
+                <div class="col-md-5">
+                  <span class="h6">Date : </span>{{currBill.bill.date | date:'dd/MM/yyyy'}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-7">
+                  <span class="h6">D.C. No. : </span>{{ currBill.dc.num}}
+                </div>
+                <div class="col-md-5">
+                  <span class="h6">Date : </span>{{currBill.dc.date | date:'dd/MM/yyyy'}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-7">
+                  <span class="h6">P.O. No. : </span>{{ currBill.po.num}}
+                </div>
+                <div class="col-md-5">
+                  <span class="h6">Date : </span>{{currBill.po.date | date:'dd/MM/yyyy'}}
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr class="thead-dark">
+          <th scope="col" style="width: 5%;">Sr.No.</th>
+          <th scope="col" style="width: 50%;">Description</th>
+          <th scope="col">Qty</th>
+          <th scope="col">Rate</th>
+          <th scope="col">Amount in Rs.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of currBill.items;let i=index;">
+          <td>{{i+1}}</td>
+          <td>{{item.description}}</td>
+          <td style="text-align: center;">{{item.qty}}</td>
+          <td style="text-align: center;">{{item.rate}}</td>
+          <td style="text-align: end;">{{item.amt}}</td>
+        </tr>
+        <tr [ngClass]="spaceClass">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="2"></td>
+          <td colspan="2" style="text-align: end;">Total Amount</td>
+          <td colspan="1" style="text-align: end;">{{currBill.tot_amt}}</td>
+        </tr>
+        <tr>
+          <td colspan="2"></td>
+          <td colspan="2" style="text-align: end;">Discounted Price@{{currBill.discountPct}}%</td>
+          <td colspan="1" style="text-align: end;">{{currBill.disctotal}}</td>
+        </tr>
+        <tr>
+          <td colspan="2"></td>
+          <td colspan="2" style="text-align: end;">Round Off</td>
+          <td colspan="1" style="text-align: end;">
+            <span *ngIf="currBill.roundoff>0">+</span>
+            {{currBill.roundoff}}
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <div>
+              <i class="h6">In Word: Rupees </i>
+              <i>{{amtInWords}}</i>
+            </div>
+          </td>
+          <td colspan="2" class="h6" style="text-align: end;">Grand Total</td>
+          <td colspan="1" class="h6" style="text-align: end;">{{currBill.grand_total}}</td>
+        </tr>
+        <tr>
+          <td colspan="2" style="width: 70%;font-size: small;">
+            <span class="h6">Terms & Conditions : </span>
+            (1) All Transaction are subjects to {{userDet.address.city}} court. 
+            (2) Goods Once sold will not be taken back or replace. 
+            (3) Risk and responsibility ceases on delivery goods. 
+            (4) Interest 24% p.a. will be charged on over due payments. (5) E. & O.E.
+          </td>
+          <td colspan="3" style="text-align: center;">
+            <i class="h6">For, </i> {{userDet.company_name}}
+            <br><br>
+            <i class="h6">Authorised Signatory</i>
+          </td>
+        </tr>
+    </tbody>
+    </table>
+  </div>
+  <br><br>
+  <!-- --------------------------------- -->
+  <div class="container mt-4 ml-4 mb-5">
+    <table class="table table-bordered" style="margin-left:5%;">
+      <thead style="text-align: center;">
+        <tr>
+          <th colspan="5" class="display-4 companyname" >{{userDet.company_name}}</th>
+        </tr>
+        <tr>
+          <td colspan="3" class="addphn">
+            {{userDet.addressString}} 
+          </td>
+          <td colspan="2" class="h5">
+            M : {{userDet.phn_no}}
+          </td>
+        </tr>
+        <tr>
+          <th colspan="5">
+            <div class="row">
+              <div class="col-md-6 billheading" style="text-align: end;">BILL</div>
+              <div class="col-md-6 copyheading" style="text-align: end;">Duplicate Copy</div>
+            </div>
+          </th>
+        </tr>
+        <tr>
+          <td colspan="2" style="text-align: left;">
+            <div style="font-size: large;"><span class="h5">M/s </span>{{currBill.party_name}}</div>
+          </td>
+          <td colspan="3" style="text-align: left;">
+            <div>
+              <div class="row">
+                <div class="col-md-7">
+                  <span class="h6">Bill No. : </span>{{ currBill.bill.num}}
+                </div>
+                <div class="col-md-5">
+                  <span class="h6">Date : </span>{{currBill.bill.date | date:'dd/MM/yyyy'}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-7">
+                  <span class="h6">D.C. No. : </span>{{ currBill.dc.num}}
+                </div>
+                <div class="col-md-5">
+                  <span class="h6">Date : </span>{{currBill.dc.date | date:'dd/MM/yyyy'}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-7">
+                  <span class="h6">P.O. No. : </span>{{ currBill.po.num}}
+                </div>
+                <div class="col-md-5">
+                  <span class="h6">Date : </span>{{currBill.po.date | date:'dd/MM/yyyy'}}
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr class="thead-dark">
+          <th scope="col" style="width: 5%;">Sr.No.</th>
+          <th scope="col" style="width: 50%;">Description</th>
+          <th scope="col">Qty</th>
+          <th scope="col">Rate</th>
+          <th scope="col">Amount in Rs.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of currBill.items;let i=index;">
+          <td>{{i+1}}</td>
+          <td>{{item.description}}</td>
+          <td style="text-align: center;">{{item.qty}}</td>
+          <td style="text-align: center;">{{item.rate}}</td>
+          <td style="text-align: end;">{{item.amt}}</td>
+        </tr>
+        <tr [ngClass]="spaceClass">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="2"></td>
+          <td colspan="2" style="text-align: end;">Total Amount</td>
+          <td colspan="1" style="text-align: end;">{{currBill.tot_amt}}</td>
+      </tr>
+      <tr>
+        <td colspan="2"></td>
+        <td colspan="2" style="text-align: end;">Discounted Price@{{currBill.discountPct}}%</td>
+        <td colspan="1" style="text-align: end;">{{currBill.disctotal}}</td>
+      </tr>
+      <tr>
+        <td colspan="2"></td>
+        <td colspan="2" style="text-align: end;">Round Off</td>
+        <td colspan="1" style="text-align: end;">
+          <span *ngIf="currBill.roundoff>0">+</span>
+          {{currBill.roundoff}}
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <div>
+            <i class="h6">In Word: Rupees </i>
+            <i>{{amtInWords}}</i>
+          </div>
+        </td>
+        <td colspan="2" class="h6" style="text-align: end;">Grand Total</td>
+        <td colspan="1" class="h6" style="text-align: end;">{{currBill.grand_total}}</td>
+      </tr>
+      <tr>
+        <td colspan="2" style="width: 70%;font-size: small;">
+          <span class="h6">Terms & Conditions : </span>
+          (1) All Transaction are subjects to {{userDet.address.city}} court. 
+          (2) Goods Once sold will not be taken back or replace. 
+          (3) Risk and responsibility ceases on delivery goods. 
+          (4) Interest 24% p.a. will be charged on over due payments. (5) E. & O.E.
+        </td>
+        <td colspan="3" style="text-align: center;">
+          <i class="h6">For, </i> {{userDet.company_name}}
+          <br><br>
+          <i class="h6">Authorised Signatory</i>
+        </td>
+      </tr>
+    </tbody>
+    </table>
+  </div>
+</div>
+<br><br><br><br>

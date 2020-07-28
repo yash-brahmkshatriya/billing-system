@@ -1,0 +1,28 @@
+{
+  "name": "billing_system",
+  "version": "1.0.0",
+  "description": "Billing system using MEAN Stack development",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "devStart": "nodemon server.js"
+  },
+  "author": "Yash Brahmkshatriya",
+  "license": "ISC",
+  "dependencies": {
+    "@angular/cli": "^9.1.7",
+    "body-parser": "^1.19.0",
+    "bootstrap": "^4.5.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "jquery": "^3.5.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.18",
+    "nodemon": "^2.0.4",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0"
+  }
+}
