@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { BillApiService } from '../../../services/bill-api.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { DatePipe } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-create-bill',
@@ -15,17 +16,54 @@ export class CreateBillComponent implements OnInit {
   today: any;
   lastBillDet: any;
   discountGiven: boolean = false;
+  private bill_id: any;
   public loading: boolean = true;
   public disableBtn: boolean = true;
+  public billMode: string;
 
   constructor(
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private billservice: BillApiService,
     private fb: FormBuilder,
     private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {
+    this.iniUpdateForm();
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.loading = true;
+      this.billMode = params.mode ? params.mode : 'create';
+      this.bill_id = params.bill_id;
+      if (this.billMode === 'edit') {
+        this.fetchAndPatchForEditBill(this.bill_id);
+        const billDateChanges$ = this.billForm.get('bill').get('date')
+          .valueChanges;
+        billDateChanges$.subscribe((bdate) => this.updateBillNum(bdate));
+      } else if (this.billMode === 'fork') {
+        this.fetchAndPatchForForkBill(this.bill_id);
+        const billDateChanges$ = this.billForm.get('bill').get('date')
+          .valueChanges;
+        billDateChanges$.subscribe((bdate) => this.updateBillNum(bdate));
+      } else {
+        this.billForm.reset();
+        this.fetchAndPatchForNewBill();
+        const billDateChanges$ = this.billForm.get('bill').get('date')
+          .valueChanges;
+        billDateChanges$.subscribe((bdate) => this.updateBillNum(bdate));
+      }
+    });
+    this.billForm.valueChanges.subscribe(() => {
+      this.disableBtn = !this.billForm.valid;
+    });
+    const itemChanges$ = this.billForm.controls['items'].valueChanges;
+    itemChanges$.subscribe((itemsData) => this.updateTotalAmt(itemsData));
+
+    const discChanges$ = this.billForm.controls['discountPct'].valueChanges;
+    discChanges$.subscribe((pct) => this.updateDiscountedPrice(pct));
+  }
+
+  fetchAndPatchForNewBill(): void {
     this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.billservice.getLastBillDetails().subscribe((data) => {
       this.loading = false;
@@ -40,20 +78,72 @@ export class CreateBillComponent implements OnInit {
         },
       });
     });
-    this.iniUpdateForm();
     this.addItem();
-    this.billForm.valueChanges.subscribe(() => {
-      this.disableBtn = !this.billForm.valid;
+  }
+
+  fetchAndPatchForEditBill(id: any): any {
+    this.billservice.getBill(id).subscribe((bill_details) => {
+      for (let i = 0; i < bill_details.items.length; i++) {
+        this.addItem();
+      }
+      if (bill_details.discountPct > 0) this.toggleDiscount();
+      bill_details.bill.date = this.formatDate(bill_details.bill.date);
+      bill_details.dc.date = this.formatDate(bill_details.dc.date);
+      bill_details.po.date = this.formatDate(bill_details.po.date);
+      this.lastBillDet = bill_details;
+      this.billForm.patchValue(bill_details, {
+        onlySelf: true,
+        emitEvent: false,
+      });
+      this.updateTotalAmt(this.billForm.get('items').value);
+      this.loading = false;
     });
+  }
 
-    const itemChanges$ = this.billForm.controls['items'].valueChanges;
-    itemChanges$.subscribe((itemsData) => this.updateTotalAmt(itemsData));
+  fetchAndPatchForForkBill(bill_id: any): void {
+    this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    this.billservice.getLastBillDetails().subscribe((data) => {
+      this.lastBillDet = data;
+      this.lastBillDet['bill']['date'] = this.today;
+      this.lastBillDet['dc']['date'] = this.today;
+      this.billForm.patchValue({
+        bill: this.lastBillDet['bill'],
+        dc: this.lastBillDet['dc'],
+        po: {
+          date: this.today,
+        },
+      });
+      this.billservice.getBill(bill_id).subscribe((bill_details) => {
+        for (let i = 0; i < bill_details.items.length; i++) {
+          this.addItem();
+        }
+        if (bill_details.discountPct > 0) this.toggleDiscount();
+        this.billForm.patchValue(
+          {
+            party_name: bill_details.party_name,
+            items: bill_details.items,
+            discountPct: bill_details.discountPct,
+            roundoff: bill_details.roundoff,
+            total_amt: bill_details.total_amt,
+            disc_amt: bill_details.disc_amt,
+            grand_total: bill_details.grand_total,
+          },
+          { onlySelf: true, emitEvent: false }
+        );
+        this.updateTotalAmt(this.billForm.get('items').value);
+        this.loading = false;
+      });
+    });
+  }
 
-    const discChanges$ = this.billForm.controls['discountPct'].valueChanges;
-    discChanges$.subscribe((pct) => this.updateDiscountedPrice(pct));
-
-    const billDateChanges$ = this.billForm.get('bill').get('date').valueChanges;
-    billDateChanges$.subscribe((bdate) => this.updateBillNum(bdate));
+  private formatDate(date) {
+    const d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-');
   }
 
   iniUpdateForm() {
@@ -197,12 +287,20 @@ export class CreateBillComponent implements OnInit {
     if (!this.billForm.valid) {
       return false;
     } else {
-      this.billservice.postBill(this.billForm.value).subscribe((success) => {
-        console.log(success);
-        this.router.navigate(['/bills/show'], {
-          queryParams: { cancelled: false },
+      if (this.billMode === 'edit') {
+        this.billservice
+          .editBill(this.billForm.value, this.bill_id)
+          .subscribe((success) => {
+            this.router.navigate([`/bills/show/${this.bill_id}`]);
+          });
+      } else {
+        this.billservice.postBill(this.billForm.value).subscribe((success) => {
+          console.log(success);
+          this.router.navigate(['/bills/show'], {
+            queryParams: { cancelled: false },
+          });
         });
-      });
+      }
     }
   }
 }

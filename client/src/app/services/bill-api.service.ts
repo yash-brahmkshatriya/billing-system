@@ -51,6 +51,16 @@ export class BillApiService {
     return this.http.get(cururl);
   }
 
+  editBill(billdata, bill_id): Observable<any> {
+    let cururl = `${this.baseURL}/edit/${bill_id}`;
+    return this.http.put(cururl, billdata).pipe(
+      map((res: Response) => {
+        return res || {};
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+
   postBill(billdata): Observable<any> {
     let cururl = `${this.baseURL}/create`;
     return this.http.post(cururl, billdata).pipe(

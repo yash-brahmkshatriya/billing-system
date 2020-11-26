@@ -147,15 +147,35 @@
               Print DC
             </button>
           </div>
-          <button
-            type="button"
-            class="btn btn-outline-danger btn-lg"
-            style="width: 100%"
-            (click)="toggleCancelMenu()"
-          >
-            <i class="fa fa-times"></i>
-            Cancel Bill
-          </button>
+          <div class="btn-group">
+            <button
+              type="button"
+              class="btn btn-dark btn-lg"
+              style="width: 33%"
+              (click)="editBill()"
+            >
+              <i class="fa fa-pencil"></i>
+              Edit Bill
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-danger btn-lg"
+              style="width: 34%"
+              (click)="toggleCancelMenu()"
+            >
+              <i class="fa fa-times"></i>
+              Cancel Bill
+            </button>
+            <button
+              type="button"
+              class="btn btn-warning btn-lg"
+              style="width: 33%"
+              (click)="forkBill()"
+            >
+              <i class="fa fa-code-fork"></i>
+              Fork Bill
+            </button>
+          </div>
         </div>
       </div>
 

@@ -66,6 +66,18 @@ export class ShowBillComponent implements OnInit {
     this.router.navigate(['bills/print-dc', this.billID]);
   }
 
+  editBill(): void {
+    this.router.navigate(['bills/create'], {
+      queryParams: { mode: 'edit', bill_id: this.billID },
+    });
+  }
+
+  forkBill(): void {
+    this.router.navigate(['bills/create'], {
+      queryParams: { mode: 'fork', bill_id: this.billID },
+    });
+  }
+
   toggleCancelMenu(): void {
     this.cancelMenu = !this.cancelMenu;
   }

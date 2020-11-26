@@ -33,7 +33,12 @@
         [routerLinkActive]="['active']"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        <a class="nav-link" [routerLink]="['/bills/create']">Create Bill</a>
+        <a
+          class="nav-link"
+          [routerLink]="['/bills/create']"
+          [queryParams]="{ mode: 'create' }"
+          >Create Bill</a
+        >
       </li>
       <li
         *ngIf="loggedIn"

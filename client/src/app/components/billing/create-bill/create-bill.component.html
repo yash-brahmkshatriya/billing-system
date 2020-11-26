@@ -1,7 +1,14 @@
 <app-loading-overlay *ngIf="loading"></app-loading-overlay>
+<div class="mt-2 ml-2 h6" *ngIf="!loading">
+  <a [routerLink]="['/dashboard']">
+    <i class="fa fa-arrow-left"></i>
+    Go Back
+  </a>
+</div>
 <div class="card mt-5 ml-4 mr-4 mb-5 shadow-lg" *ngIf="!loading">
   <div class="card-header">
-    <h1 class="display-4">Create Bill</h1>
+    <h1 class="display-4" *ngIf="billMode !== 'edit'">Create Bill</h1>
+    <h1 class="display-4" *ngIf="billMode === 'edit'">Edit Bill</h1>
   </div>
   <div class="card-body" *ngIf="!loading">
     <div>
@@ -9,16 +16,6 @@
         <!-- < PARTY NAME > -->
         <div class="form-group">
           <label for="party_name" class="heading">Party Name</label>
-          <!-- <input
-            type="text"
-            formControlName="party_name"
-            class="form-control"
-            placeholder="Bill given to"
-            [ngClass]="{
-              'is-invalid':
-                party_name.invalid && (party_name.dirty || party_name.touched)
-            }"
-          /> -->
           <textarea
             formControlName="party_name"
             class="form-control"
@@ -27,7 +24,7 @@
               'is-invalid':
                 party_name.invalid && (party_name.dirty || party_name.touched)
             }"
-            rows="1"
+            rows="3"
           >
           </textarea>
           <span
@@ -101,7 +98,16 @@
           <div class="col-10">
             <span class="h6"> Any Discount ? </span>
             <label class="switch">
-              <input type="checkbox" (click)="toggleDiscount()" />
+              <input
+                type="checkbox"
+                (click)="toggleDiscount()"
+                [checked]="
+                  discountPct.value > 0 ||
+                  discountPct.touched ||
+                  discountPct.dirty
+                "
+                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+              />
               <span class="slider round"> </span>
             </label>
           </div>
@@ -162,11 +168,6 @@
               <tr [formGroupName]="i">
                 <th scope="row" class="heading">{{ i + 1 }}</th>
                 <td style="width: 48%">
-                  <!-- <input
-                  type="text"
-                  formControlName="description"
-                  class="form-control"
-                /> -->
                   <textarea
                     formControlName="description"
                     class="form-control"
