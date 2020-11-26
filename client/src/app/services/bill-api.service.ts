@@ -13,7 +13,7 @@ import {
 export class BillApiService {
   prodURL: string = `http://localhost:8000`;
   deployUrl: string = ``;
-  baseURL: string = `${this.prodURL}/api/bill`;
+  baseURL: string = `${this.deployUrl}/api/bill`;
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   private token: string;

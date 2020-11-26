@@ -14,7 +14,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class UserapiService {
   prodURL: string = `http://localhost:8000`;
   deployUrl: string = ``;
-  baseURL: string = `${this.prodURL}/api/user`;
+  baseURL: string = `${this.deployUrl}/api/user`;
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   private token: string = null;
