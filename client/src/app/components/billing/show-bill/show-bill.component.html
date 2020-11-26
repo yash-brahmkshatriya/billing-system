@@ -1,65 +1,67 @@
-<div class="container loading" *ngIf="loading">
-  <img src="assets/imgs/loadinggif1.gif" class="loadinggif">
-  <div class="display-4" style="font-size: x-large;">
-    Loading... Please Wait
-  </div>
-</div>
-<div class="card mt-5 mb-5 ml-5 mr-5" >
+<app-loading-overlay *ngIf="loading"></app-loading-overlay>
+<div class="card mt-5 mb-5 ml-5 mr-5 shadow-lg" *ngIf="!loading">
   <div class="card-header">
-    <h1 class="display-4" style="font-size: 40px;">Bill No. {{currBill.bill.num}} of year {{currBill.bill.date|date:'yyyy'}}</h1>
+    <h1 class="display-4" style="font-size: 40px">
+      Bill No. {{ currBill.bill.num }} of year
+      {{ currBill.bill.date | date: "yyyy" }}
+    </h1>
   </div>
-  <div class="card-body" >
+  <div class="card-body">
     <div>
-      <h5>Party Name : <small>{{currBill.party_name}}</small></h5>
+      <h5>Party Name :</h5>
+      <span style="white-space: pre-line; font-size: large">
+        {{ currBill.party_name }}
+      </span>
     </div>
+    <br />
     <div class="row">
-      <div class="row col-4">
-        <div class="col-5">
+      <div class="row col-md-4">
+        <div class="col-md-5">
           <h5>Bill No</h5>
-          <p class="amtcss">{{currBill.bill.num}}</p>
+          <p class="amtcss">{{ currBill.bill.num }}</p>
         </div>
-        <div class="col-6">
+        <div class="col-md-6">
           <h5>Bill Date</h5>
-          <p class="amtcss">{{currBill.bill.date|date:'dd/MM/yyyy'}}</p>
+          <p class="amtcss">{{ currBill.bill.date | date: "dd/MM/yyyy" }}</p>
         </div>
-        <div class="col-1"></div>
+        <div class="col-md-1"></div>
       </div>
-  
-      <div class="row col-4">
-        <div class="col-5">
+
+      <div class="row col-md-4">
+        <div class="col-md-5">
           <h5>DC No</h5>
-          <p class="amtcss">{{currBill.dc.num}}</p>
+          <p class="amtcss">{{ currBill.dc.num }}</p>
         </div>
-        <div class="col-6">
+        <div class="col-md-6">
           <h5>DC Date</h5>
-          <p class="amtcss">{{currBill.dc.date|date:'dd/MM/yyyy'}}</p> 
+          <p class="amtcss">{{ currBill.dc.date | date: "dd/MM/yyyy" }}</p>
         </div>
-        <div class="col-1"></div>
+        <div class="col-md-1"></div>
       </div>
-  
-      <div class="row col-4">
-        <div class="col-5">
+
+      <div class="row col-md-4">
+        <div class="col-md-5">
           <h5>PO No</h5>
-          <p class="amtcss">{{currBill.po.num}}</p>
+          <p class="amtcss">{{ currBill.po.num }}</p>
         </div>
-        <div class="col-6">
+        <div class="col-md-6">
           <h5>PO Date</h5>
-          <p class="amtcss">{{currBill.po.date|date:'dd/MM/yyyy'}}</p> 
+          <p class="amtcss">{{ currBill.po.date | date: "dd/MM/yyyy" }}</p>
         </div>
-        <div class="col-1"></div>
+        <div class="col-md-1"></div>
       </div>
     </div>
-    <hr>
+    <hr />
     <div *ngIf="currBill.cancelled">
       <h6>This Bill was Cancelled</h6>
       <p>
         <span class="h6">Reason for Cancellation: </span>
-        {{currBill.cancel_reason}}
+        {{ currBill.cancel_reason }}
       </p>
+      <hr />
     </div>
-    <hr>
-    <div>
-      <table class="table table-stripped">
+    <div style="overflow-x: auto">
+      <table class="table table-stripped table-responsive">
         <thead class="thead-dark">
           <tr>
             <th scope="col">#</th>
@@ -69,13 +71,20 @@
             <th scope="col">Amt</th>
           </tr>
         </thead>
-        <tbody *ngFor="let item of currBill.items;let i = index;" class="border-left border-right">
+        <tbody
+          *ngFor="let item of currBill.items; let i = index"
+          class="border-left border-right"
+        >
           <tr>
-            <th scope="row" style="width: 10%;">{{i+1}}</th>
-            <td class="tdcss" style="width: 40%;">{{item.description}}</td>
-            <td style="width: 20%;">{{item.qty}}</td>
-            <td style="width: 20%;">{{item.rate}}</td>
-            <td>{{item.amt}}</td>
+            <th scope="row" style="width: 10%">{{ i + 1 }}</th>
+            <td class="tdcss desc" style="width: 40%">
+              {{ item.description }}
+            </td>
+            <td style="width: 20%">{{ item.qty }} {{ item.unit }}</td>
+            <td style="width: 20%">
+              {{ item.rate }} / {{ item.per_unit }} {{ item.unit }}
+            </td>
+            <td>{{ item.amt }}</td>
           </tr>
         </tbody>
         <tbody class="border">
@@ -84,14 +93,14 @@
             <td></td>
             <td></td>
             <td class="h4 border">Total Amount</td>
-            <td class="border">{{currBill.tot_amt}}</td>
+            <td class="border">{{ currBill.tot_amt }}</td>
           </tr>
           <tr *ngIf="discountGiven">
             <td></td>
             <td></td>
             <td></td>
-            <td class="h4 border">Discounted Price</td>
-            <td class="border">{{currBill.disctotal}}</td>
+            <td class="h4 border">Discount Amount</td>
+            <td class="border">- {{ currBill.disc_amt }}</td>
           </tr>
           <tr>
             <td></td>
@@ -99,8 +108,8 @@
             <td></td>
             <td class="h4 border">Round Off</td>
             <td class="border">
-              <span *ngIf="currBill.roundoff>0">+</span>
-              {{currBill.roundoff}}
+              <span *ngIf="currBill.roundoff > 0">+</span>
+              {{ currBill.roundoff }}
             </td>
           </tr>
           <tr class="border-bottom">
@@ -108,35 +117,74 @@
             <td></td>
             <td></td>
             <td class="h4 border">Grand Total</td>
-            <td class="border">{{currBill.grand_total}}</td>
+            <td class="border">{{ currBill.grand_total }}</td>
           </tr>
         </tbody>
       </table>
-      
-      <div class="container mt-4 mb-5" *ngIf="!cancelMenu && !currBill.cancelled">
-        <div class="btn-group" style="width:100%;">
-          <button type="button" class="btn btn-dark btn-lg" style="width: 50%;" (click)="printBill()">
-            <i class="fa fa-print"></i>
-            Print Bill
-          </button>
-          <button type="button" class="btn btn-outline-danger btn-lg" style="width: 50%;" (click)="toggleCancelMenu()">
+
+      <div
+        class="container mt-4 mb-5"
+        *ngIf="!cancelMenu && !currBill.cancelled"
+      >
+        <div class="btn-group-vertical" style="width: 100%">
+          <div class="btn-group">
+            <button
+              type="button"
+              class="btn btn-primary btn-lg"
+              style="width: 50%"
+              (click)="printBill()"
+            >
+              <i class="fa fa-print"></i>
+              Print Bill
+            </button>
+            <button
+              type="button"
+              class="btn btn-success btn-lg"
+              style="width: 50%"
+              (click)="printDC()"
+            >
+              <i class="fa fa-print"></i>
+              Print DC
+            </button>
+          </div>
+          <button
+            type="button"
+            class="btn btn-outline-danger btn-lg"
+            style="width: 100%"
+            (click)="toggleCancelMenu()"
+          >
             <i class="fa fa-times"></i>
             Cancel Bill
           </button>
         </div>
       </div>
-  
+
       <div class="container mt-4 mb-5" *ngIf="cancelMenu">
         <div [formGroup]="cancelForm" class="form-group">
           <label for="cancel_reason">Reason for Cancelling Bill</label>
-          <textarea name="cancel_reason" id="cancel_reason" formControlName="cancel_reason" class="form-control"></textarea>
+          <textarea
+            name="cancel_reason"
+            id="cancel_reason"
+            formControlName="cancel_reason"
+            class="form-control"
+          ></textarea>
         </div>
-        <div class="btn-group" style="width:100%;">
-          <button type="button" class="btn btn-outline-danger btn-lg" style="width: 50%;" (click)="cancelBill()">
+        <div class="btn-group" style="width: 100%">
+          <button
+            type="button"
+            class="btn btn-outline-danger btn-lg"
+            style="width: 50%"
+            (click)="cancelBill()"
+          >
             <i class="fa fa-print"></i>
             Confirm Operation
           </button>
-          <button type="button" class="btn btn-dark btn-lg" style="width: 50%;" (click)="toggleCancelMenu()">
+          <button
+            type="button"
+            class="btn btn-dark btn-lg"
+            style="width: 50%"
+            (click)="toggleCancelMenu()"
+          >
             <i class="fa fa-times"></i>
             Cancel Operation
           </button>

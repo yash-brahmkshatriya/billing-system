@@ -1,4 +1,7 @@
 .dropdown-item:hover {
-    background-color: #8f8f8f;
-    color: white;
+  background-color: #8f8f8f;
+  color: white;
+}
+.navbar-brand {
+  font-family: "Bungee";
 }

@@ -27,6 +27,8 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { ChangePasswordComponent } from './components/user/change-password/change-password.component';
 import { HomeComponent } from './components/home/home.component';
 import { Page404Component } from './components/page404/page404.component';
+import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
+import { PrintDcComponent } from './components/billing/print-dc/print-dc.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { Page404Component } from './components/page404/page404.component';
     PrintBillComponent,
     ChangePasswordComponent,
     HomeComponent,
-    Page404Component
+    Page404Component,
+    LoadingOverlayComponent,
+    PrintDcComponent
   ],
   imports: [
     BrowserModule,

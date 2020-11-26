@@ -1,6 +1,9 @@
 .amtcss {
-    font-size: large;
+  font-size: large;
 }
 .tdcss {
-    font-size: large;
+  font-size: large;
+}
+.tdcss.desc {
+  white-space: pre-line;
 }

@@ -5,12 +5,12 @@
   style="background-color: white; padding: 5px"
   *ngIf="!loadingBill && !loadingProfile"
 >
-  <div class="container mt-4 ml-4 mb-5" *ngIf="!loadingBill && !loadingProfile">
+  <div class="container mt-4 ml-4 mb-5">
     <table class="table table-bordered" style="margin-left: 5%">
       <thead style="text-align: center">
         <tr>
           <th
-            colspan="5"
+            colspan="4"
             class="display-4 companyname"
             style="line-height: 80px"
           >
@@ -18,15 +18,15 @@
           </th>
         </tr>
         <tr>
-          <td colspan="3" class="addphn">
+          <td colspan="3" class="addphn" style="width: 75%">
             {{ userDet.addressString }}
           </td>
-          <td colspan="2" class="addphn" style="font-weight: bold">
+          <td colspan="1" class="addphn" style="font-weight: bold">
             M : {{ userDet.phn_no }}
           </td>
         </tr>
         <tr>
-          <th colspan="5" class="billheading">BILL</th>
+          <th colspan="4" class="billheading">DELIVERY CHALLAN</th>
         </tr>
         <tr style="font-family: Helvetica">
           <td colspan="2" style="text-align: left">
@@ -35,17 +35,22 @@
             </div>
           </td>
           <td
-            colspan="3"
-            style="text-align: left; line-height: 50px; font-size: large"
+            colspan="2"
+            style="
+              text-align: left;
+              line-height: 50px;
+              font-size: large;
+              width: 25%;
+            "
           >
             <table class="table datestable">
               <tr>
-                <td>Bill No. &nbsp;&nbsp;: {{ currBill.bill.num }}</td>
-                <td>Date : {{ currBill.bill.date | date: "dd/MM/yyyy" }}</td>
-              </tr>
-              <tr>
                 <td>D.C. No. : {{ currBill.dc.num }}</td>
                 <td>Date : {{ currBill.dc.date | date: "dd/MM/yyyy" }}</td>
+              </tr>
+              <tr>
+                <td>Bill No. &nbsp;&nbsp;: {{ currBill.bill.num }}</td>
+                <td>Date : {{ currBill.bill.date | date: "dd/MM/yyyy" }}</td>
               </tr>
               <tr>
                 <td>P.O. No. : {{ currBill.po.num }}</td>
@@ -55,19 +60,20 @@
           </td>
         </tr>
         <tr class="bodyheading">
-          <th scope="col" style="width: 5%; line-height: 50px">Sr.No.</th>
-          <th scope="col" class="bodyheadingdesc">Description</th>
-          <th scope="col" class="bodyheadingqty">Qty</th>
-          <th scope="col" class="bodyheadingrate">Rate(Rs.)</th>
-          <th scope="col" style="line-height: 50px">Amount(Rs.)</th>
+          <th colspan="1" scope="col" style="width: 2%; line-height: 50px">
+            Sr.No.
+          </th>
+          <th colspan="2" scope="col" class="bodyheadingdesc">Description</th>
+          <th colspan="1" scope="col" class="bodyheadingqty">Qty</th>
         </tr>
       </thead>
       <tbody class="bodycontent">
         <tr *ngFor="let item of currBill.items; let i = index">
-          <td style="vertical-align: middle; text-align: center">
+          <td colspan="1" style="vertical-align: middle; text-align: center">
             {{ i + 1 }}
           </td>
           <td
+            colspan="2"
             style="
               padding: 7px 7px;
               vertical-align: middle;
@@ -76,54 +82,14 @@
           >
             {{ item.description }}
           </td>
-          <td style="text-align: center; vertical-align: middle">
+          <td colspan="1" style="text-align: center; vertical-align: middle">
             {{ item.qty }}<br />{{ item.unit }}
-          </td>
-          <td style="text-align: center; vertical-align: middle">
-            {{ item.rate }} <br />
-            per {{ item.per_unit }} {{ item.unit }}
-          </td>
-          <td style="text-align: end; vertical-align: middle">
-            {{ item.amt }}
           </td>
         </tr>
         <tr [ngClass]="spaceClass">
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr style="line-height: 40px">
+          <td colspan="1"></td>
           <td colspan="2"></td>
-          <td colspan="2" style="text-align: end">Total Amount</td>
-          <td colspan="1" style="text-align: end">{{ currBill.tot_amt }}</td>
-        </tr>
-        <tr style="line-height: 40px" *ngIf="currBill.discountPct > 0">
-          <td colspan="2"></td>
-          <td colspan="2" style="text-align: end">
-            Discount Amount@{{ currBill.discountPct }}%
-          </td>
-          <td colspan="1" style="text-align: end">- {{ currBill.disc_amt }}</td>
-        </tr>
-        <tr style="line-height: 40px">
-          <td colspan="2"></td>
-          <td colspan="2" style="text-align: end">Round Off</td>
-          <td colspan="1" style="text-align: end">
-            <span *ngIf="currBill.roundoff > 0">+</span>
-            {{ currBill.roundoff }}
-          </td>
-        </tr>
-        <tr style="line-height: 40px">
-          <td colspan="2">
-            <div>
-              <i class="h6"><b>In Word:</b> Rupees {{ amtInWords }}</i>
-            </div>
-          </td>
-          <td colspan="2" class="grandtotalrow">Grand Total</td>
-          <td colspan="1" class="grandtotalrow">
-            {{ currBill.grand_total }}
-          </td>
+          <td colspan="1"></td>
         </tr>
         <tr>
           <td colspan="2" style="width: 70%; font-size: small">
@@ -134,7 +100,7 @@
             on delivery goods.<br />(4) Interest 24% p.a. will be charged on
             over due payments. <br />(5) E. & O.E.
           </td>
-          <td colspan="3" style="text-align: center; line-height: 40px">
+          <td colspan="2" style="text-align: center; line-height: 40px">
             <i class="h6">For, </i>
             <span style="font-family: Peralta">{{ userDet.company_name }} </span
             ><br /><br />

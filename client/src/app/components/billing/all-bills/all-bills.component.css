@@ -1,6 +1,10 @@
 .button-cell {
-    text-align: center;
+  text-align: center;
 }
 .tdcss {
-    font-size: large;
+  font-size: large;
+}
+.tdcss.desc {
+  width: 35%;
+  white-space: pre !important;
 }

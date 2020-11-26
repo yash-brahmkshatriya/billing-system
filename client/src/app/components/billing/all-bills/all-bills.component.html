@@ -1,60 +1,93 @@
-<div class="container loading" *ngIf="loading">
-  <img src="assets/imgs/loadinggif1.gif" class="loadinggif">
-  <div class="display-4" style="font-size: x-large;">
-    Loading... Please Wait
-  </div>
-</div>
-<div class="card mt-5 ml-5 mr-5 mb-5">
+<app-loading-overlay *ngIf="loading"></app-loading-overlay>
+<div class="card mt-5 ml-5 mr-5 mb-5 shadow-lg" *ngIf="!loading">
   <div class="card-header">
     <div class="row">
       <div class="col">
         <h1 class="display-4">Your Bills</h1>
       </div>
-      <div class="col-md-2">
-        <a [routerLink]="['/bills/show']" [queryParams]="{cancelled:true}">Cancelled Bills</a>
+      <div
+        class="col-md-2"
+        *ngIf="cancelledReq === true || cancelledReq === undefined"
+      >
+        <a [routerLink]="['/bills/show']" [queryParams]="{ cancelled: false }"
+          >Approved Bills</a
+        >
       </div>
-      <div class="col-md-1">
+      <div
+        class="col-md-2"
+        *ngIf="cancelledReq === undefined || cancelledReq === false"
+      >
+        <a [routerLink]="['/bills/show']" [queryParams]="{ cancelled: true }"
+          >Cancelled Bills</a
+        >
+      </div>
+      <div class="col-md-1" *ngIf="cancelledReq !== undefined">
         <a [routerLink]="['/bills/show']">All Bills</a>
       </div>
     </div>
   </div>
   <div class="card-body" *ngIf="!loading">
     <div>
-    <table class="table table-stripped table-hover" >
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Bill No</th>
-          <th scope="col">Bill Date</th>
-          <th scope="col">Party Name</th>
-          <th scope="col">No of items</th>
-          <th scope="col">Total Amount</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody *ngFor="let bill of billDetails;let i=index;">
-        <tr *ngIf="cancelledReq===undefined && bill.cancelled; else allBills" class="table-danger">
-          <th scope="row" style="width: 5%;">{{i+1}}</th>
-          <td class="tdcss" style="width: 8%;">{{bill.bill.num}}</td>
-          <td class="tdcss" style="width: 12%;">{{bill.bill.date | date:'dd/MM/yyyy'}}</td>
-          <td class="tdcss" style="width: 35%;">{{bill.party_name}}</td>
-          <td class="tdcss" style="width: 15%;">{{bill.items.length}}</td>
-          <td class="tdcss" style="width: 15%;">{{bill.grand_total}}</td>
-          <td class="button-cell"><button type="button" class="btn btn-outline-success" (click)="showBill(bill)">Show</button></td>
-        </tr>
-        <ng-template #allBills>
+      <table class="table table-striped table-hover">
+        <thead class="thead-dark">
           <tr>
-            <th scope="row" style="width: 5%;">{{i+1}}</th>
-            <td class="tdcss" style="width: 8%;">{{bill.bill.num}}</td>
-            <td class="tdcss" style="width: 12%;">{{bill.bill.date | date:'dd/MM/yyyy'}}</td>
-            <td class="tdcss" style="width: 35%;">{{bill.party_name}}</td>
-            <td class="tdcss" style="width: 15%;">{{bill.items.length}}</td>
-            <td class="tdcss" style="width: 15%;">{{bill.grand_total}}</td>
-            <td class="button-cell"><button type="button" class="btn btn-outline-success" (click)="showBill(bill)">Show</button></td>
+            <th scope="col">#</th>
+            <th scope="col">Bill No</th>
+            <th scope="col">Bill Date</th>
+            <th scope="col">Party Name</th>
+            <th scope="col">No of items</th>
+            <th scope="col">Total Amount</th>
+            <th scope="col"></th>
           </tr>
-        </ng-template>
-      </tbody>
-    </table>
+        </thead>
+        <tbody *ngFor="let bill of billDetails; let i = index">
+          <tr
+            *ngIf="cancelledReq === undefined && bill.cancelled; else allBills"
+            class="table-danger"
+          >
+            <th scope="row" style="width: 5%">{{ i + 1 }}</th>
+            <td class="tdcss" style="width: 8%">{{ bill.bill.num }}</td>
+            <td class="tdcss" style="width: 12%">
+              {{ bill.bill.date | date: "dd/MM/yyyy" }}
+            </td>
+            <td class="tdcss desc">
+              {{ bill.party_name }}
+            </td>
+            <td class="tdcss" style="width: 15%">{{ bill.items.length }}</td>
+            <td class="tdcss" style="width: 15%">{{ bill.grand_total }}</td>
+            <td class="button-cell">
+              <button
+                type="button"
+                class="btn btn-outline-success"
+                (click)="showBill(bill)"
+              >
+                Show
+              </button>
+            </td>
+          </tr>
+          <ng-template #allBills>
+            <tr>
+              <th scope="row" style="width: 5%">{{ i + 1 }}</th>
+              <td class="tdcss" style="width: 8%">{{ bill.bill.num }}</td>
+              <td class="tdcss" style="width: 12%">
+                {{ bill.bill.date | date: "dd/MM/yyyy" }}
+              </td>
+              <td class="tdcss desc">{{ bill.party_name }}</td>
+              <td class="tdcss" style="width: 15%">{{ bill.items.length }}</td>
+              <td class="tdcss" style="width: 15%">{{ bill.grand_total }}</td>
+              <td class="button-cell">
+                <button
+                  type="button"
+                  class="btn btn-outline-success"
+                  (click)="showBill(bill)"
+                >
+                  Show
+                </button>
+              </td>
+            </tr>
+          </ng-template>
+        </tbody>
+      </table>
     </div>
   </div>
-</div>  
+</div>

@@ -1,22 +1,17 @@
-<div class="container loading" *ngIf="loading">
-    <img src="assets/imgs/loadinggif1.gif" class="loadinggif">
-    <div class="display-4" style="font-size: x-large;">
-      Loading... Please Wait
-    </div>
-</div>
+<app-loading-overlay *ngIf="loading"></app-loading-overlay>
 <div class="dash-container" *ngIf="!loading">
-    <div class="buttons">
-        <button class="btn btn-success" (click)="toCreateBill()">
-            <i class="fa fa-plus"></i>
-        </button>
-        <div class="cntCircle">
-            <h1 class="display-4" style="margin-top: 25%;color: white;">
-                Bill Count<br>
-                <span class="cnt">{{noOfBills}}</span>
-            </h1>
-        </div>
-        <button class="btn btn-danger" (click)="toShowBill()">
-            <i class="fa fa-eye fa-1"></i>
-        </button>
+  <div class="buttons">
+    <button class="btn btn-success shadow-lg" (click)="toCreateBill()">
+      <i class="fa fa-plus"></i>
+    </button>
+    <div class="cntCircle shadow-lg">
+      <h1 class="display-4" style="margin-top: 25%; color: black">
+        Bill Count<br />
+        <span class="cnt">{{ noOfBills }}</span>
+      </h1>
     </div>
+    <button class="btn btn-danger shadow-lg" (click)="toShowBill()">
+      <i class="fa fa-eye fa-1"></i>
+    </button>
+  </div>
 </div>

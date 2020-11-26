@@ -1,42 +1,67 @@
-<div class="container loading" *ngIf="loading">
-  <img src="assets/imgs/loadinggif1.gif" class="loadinggif">
-  <div class="display-4" style="font-size: x-large;">
-    Loading... Please Wait
-  </div>
-</div>
+<app-loading-overlay *ngIf="loading"></app-loading-overlay>
 <flash-messages></flash-messages>
-<div class="card mt-5 ml-4 mr-4 mb-5" *ngIf="!loading">
+<div class="card mt-5 ml-4 mr-4 mb-5 shadow-lg" *ngIf="!loading">
   <div class="card-header">
     <h1 class="display-4"><strong>Profile</strong></h1>
   </div>
   <div class="card-body">
     <div class="row">
-      <div class="col-4">
+      <div class="col-md-4 d-none d-md-block">
         <div class="sepline">
           <div class="left-content">
-            <i class="fa fa-user-circle" style="font-size: 150px;" aria-hidden="true"></i>
-            <h3 style="padding-top: 10px;">Hello Ji</h3>
+            <i
+              class="fa fa-user-circle"
+              style="font-size: 150px"
+              aria-hidden="true"
+            ></i>
+            <h3 style="padding-top: 10px">Hello Ji</h3>
           </div>
         </div>
       </div>
-      <div class="col-8">
+      <div class="col-md-8">
         <div class="right-content">
           <div class="navbar-tabs">
             <ul class="nav nav-tabs" id="optionsTab" role="tablist">
               <li class="nav-item">
-                <a (click)="showToggle()" class="nav-link active" id="show-tab" href="#show" data-toggle="tab" role="tab" aria-controls="showProfile" aria-selected="true">Show</a>
+                <a
+                  (click)="showToggle()"
+                  class="nav-link active"
+                  id="show-tab"
+                  href="#show"
+                  data-toggle="tab"
+                  role="tab"
+                  aria-controls="showProfile"
+                  aria-selected="true"
+                  >Show</a
+                >
               </li>
               <li class="nav-item">
-                <a (click)="updateToggle()" class="nav-link" id="update-tab" href="#update" data-toggle="tab" role="tab" aria-controls="updateProfile" aria-selected="false">Update</a>
+                <a
+                  (click)="updateToggle()"
+                  class="nav-link"
+                  id="update-tab"
+                  href="#update"
+                  data-toggle="tab"
+                  role="tab"
+                  aria-controls="updateProfile"
+                  aria-selected="false"
+                  >Update</a
+                >
               </li>
             </ul>
           </div>
           <div class="container">
             <div class="tab-content" id="optionsTabContent">
-              <div class="tab-pane fade show active" id="show" role="tabpanel" aria-labelledby="show-tab">
+              <div
+                class="tab-pane fade show active"
+                id="show"
+                role="tabpanel"
+                aria-labelledby="show-tab"
+              >
                 <div class="display-4">
-                  {{userInfo.pfname + " " + userInfo.plname}}
-                </div><hr>
+                  {{ userInfo.pfname + " " + userInfo.plname }}
+                </div>
+                <hr />
                 <div class="container">
                   <div class="row field-item">
                     <span class="col-1 icon">
@@ -46,142 +71,368 @@
                       {{ userInfo.company_name }}
                     </span>
                   </div>
-  
+
                   <div class="row field-item">
                     <span class="col-1 icon">
                       <i class="fa fa-map-marker"></i>
                     </span>
                     <span class="coll-11 field-value">
-                      {{userInfo.address.locality + ", "+ userInfo.address.city}}
+                      {{
+                        userInfo.address.locality + ", " + userInfo.address.city
+                      }}
                     </span>
                   </div>
-  
+
                   <div class="row field-item">
                     <span class="col-1 icon">
                       <i class="fa fa-envelope"></i>
                     </span>
                     <span class="col-11 field-value">
-                      {{userInfo.email}}
+                      {{ userInfo.email }}
                     </span>
                   </div>
-                  
+
                   <div class="row field-item">
                     <span class="col-1 icon">
                       <i class="fa fa-phone"></i>
                     </span>
                     <span class="col-11 field-value">
-                      {{userInfo.phn_no}}
+                      {{ userInfo.phn_no }}
                     </span>
                   </div>
                 </div>
               </div>
-              <div class="tab-pane fade" id="update" role="tabpanel" aria-labelledby="update-tab">
+              <div
+                class="tab-pane fade"
+                id="update"
+                role="tabpanel"
+                aria-labelledby="update-tab"
+              >
                 <form [formGroup]="updateform" (ngSubmit)="onSubmit()">
                   <label for="name" class="heading">Name</label>
                   <div class="form-row">
                     <div class="form-group col-md-5">
-                      <input *ngIf="toUpdate" class="form-control" type="text" formControlName="pfname" placeholder="First Name" [ngClass]="{'is-invalid':pfname.invalid && (pfname.touched || pfname.dirty)}">
-                      <span class="invalid-feedback" *ngIf="pfname.invalid && (pfname.touched || pfname.dirty)">
-                        <p *ngIf="pfname.errors?.required">First Name is required.</p>
-                        <p *ngIf="pfname.errors?.maxlength">It must be max 100 characters long.</p>
+                      <input
+                        *ngIf="toUpdate"
+                        class="form-control"
+                        type="text"
+                        formControlName="pfname"
+                        placeholder="First Name"
+                        [ngClass]="{
+                          'is-invalid':
+                            pfname.invalid && (pfname.touched || pfname.dirty)
+                        }"
+                      />
+                      <span
+                        class="invalid-feedback"
+                        *ngIf="
+                          pfname.invalid && (pfname.touched || pfname.dirty)
+                        "
+                      >
+                        <p *ngIf="pfname.errors?.required">
+                          First Name is required.
+                        </p>
+                        <p *ngIf="pfname.errors?.maxlength">
+                          It must be max 100 characters long.
+                        </p>
                       </span>
                     </div>
                     <div class="form-group col-md-7">
-                      <input *ngIf="toUpdate" class="form-control" type="text" formControlName="plname" placeholder="Last Name" [ngClass]="{'is-invalid':plname.invalid && (plname.touched || plname.dirty)}">
-                      <span class="invalid-feedback" *ngIf="plname.invalid && (plname.touched || plname.dirty)">
-                        <p *ngIf="plname.errors?.required">Last Name is required.</p>
-                        <p *ngIf="plname.errors?.maxlength">It must be max 100 characters long.</p>
+                      <input
+                        *ngIf="toUpdate"
+                        class="form-control"
+                        type="text"
+                        formControlName="plname"
+                        placeholder="Last Name"
+                        [ngClass]="{
+                          'is-invalid':
+                            plname.invalid && (plname.touched || plname.dirty)
+                        }"
+                      />
+                      <span
+                        class="invalid-feedback"
+                        *ngIf="
+                          plname.invalid && (plname.touched || plname.dirty)
+                        "
+                      >
+                        <p *ngIf="plname.errors?.required">
+                          Last Name is required.
+                        </p>
+                        <p *ngIf="plname.errors?.maxlength">
+                          It must be max 100 characters long.
+                        </p>
                       </span>
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="email" class="heading">Email </label>
-                    <input *ngIf="toUpdate" class="form-control" type="email" formControlName="email">
+                    <input
+                      *ngIf="toUpdate"
+                      class="form-control"
+                      type="email"
+                      formControlName="email"
+                    />
                   </div>
-                  
+
                   <div class="form-group">
-                    <label for="company_name" class="heading">Company Name</label>
-                    <input formControlName="company_name" type="text" class="form-control" placeholder="eg. Google Inc." [ngClass]="{'is-invalid':company_name.invalid && (company_name.touched || company_name.dirty)}">
-                    <span class="invalid-feedback" *ngIf="company_name.invalid && (company_name.touched || company_name.dirty)">
-                      <p *ngIf="company_name.errors?.required">Company Name is required.</p>
-                      <p *ngIf="company_name.errors?.maxlength">It must be max 100 characters long.</p>
+                    <label for="company_name" class="heading"
+                      >Company Name</label
+                    >
+                    <input
+                      formControlName="company_name"
+                      type="text"
+                      class="form-control"
+                      placeholder="eg. Google Inc."
+                      [ngClass]="{
+                        'is-invalid':
+                          company_name.invalid &&
+                          (company_name.touched || company_name.dirty)
+                      }"
+                    />
+                    <span
+                      class="invalid-feedback"
+                      *ngIf="
+                        company_name.invalid &&
+                        (company_name.touched || company_name.dirty)
+                      "
+                    >
+                      <p *ngIf="company_name.errors?.required">
+                        Company Name is required.
+                      </p>
+                      <p *ngIf="company_name.errors?.maxlength">
+                        It must be max 100 characters long.
+                      </p>
                     </span>
                   </div>
-  
+
                   <div class="form-row">
                     <div class="form-group col-md-3">
-                      <label for="country_code" class="heading">Country Code</label>
-                      <input type="text" class="form-control" value="+91" disabled>
+                      <label for="country_code" class="heading"
+                        >Country Code</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        value="+91"
+                        disabled
+                      />
                     </div>
                     <div class="form-group col-md-9">
                       <label for="phn_no" class="heading">Contact No:</label>
-                      <input formControlName="phn_no" type="text" class="form-control" placeholder="eg. 9876543210" [ngClass]="{'is-invalid':phn_no.invalid && (phn_no.touched || phn_no.dirty)}">
-                      <span class="invalid-feedback" *ngIf="phn_no.invalid && (phn_no.touched || phn_no.dirty)">
-                        <p *ngIf="phn_no.errors?.required">Phone Number is required.</p>
-                        <p *ngIf="phn_no.errors?.pattern;else lenErr">Only numeric digits allowed.</p>
+                      <input
+                        formControlName="phn_no"
+                        type="text"
+                        class="form-control"
+                        placeholder="eg. 9876543210"
+                        [ngClass]="{
+                          'is-invalid':
+                            phn_no.invalid && (phn_no.touched || phn_no.dirty)
+                        }"
+                      />
+                      <span
+                        class="invalid-feedback"
+                        *ngIf="
+                          phn_no.invalid && (phn_no.touched || phn_no.dirty)
+                        "
+                      >
+                        <p *ngIf="phn_no.errors?.required">
+                          Phone Number is required.
+                        </p>
+                        <p *ngIf="phn_no.errors?.pattern; else lenErr">
+                          Only numeric digits allowed.
+                        </p>
                         <ng-template #lenErr>
-                          <p *ngIf="phn_no.errors?.minlength || phn_no.errors?.maxlength">It must be of 10 digits long.</p>
+                          <p
+                            *ngIf="
+                              phn_no.errors?.minlength ||
+                              phn_no.errors?.maxlength
+                            "
+                          >
+                            It must be of 10 digits long.
+                          </p>
                         </ng-template>
                       </span>
                     </div>
                   </div>
-  
+
                   <div formGroupName="address">
                     <div class="form-row">
                       <div class="form-group col-md-5">
                         <label for="inputCity" class="heading">Place</label>
-                        <input type="text" class="form-control" formControlName="place_no" placeholder="eg. A-1234, Pramukh Arcade" [ngClass]="{'is-invalid':place_no.invalid && (place_no.dirty || place_no.touched)}">
-                        <span class="invalid-feedback" *ngIf="place_no.invalid && (place_no.dirty || place_no.touched)">
-                          <p *ngIf="place_no.errors?.required">Place No. is required.</p>
-                          <p *ngIf="place_no.errors?.maxlength">Place No. must be at most 50 characters long.</p>
-                      </span>          
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="place_no"
+                          placeholder="eg. A-1234, Pramukh Arcade"
+                          [ngClass]="{
+                            'is-invalid':
+                              place_no.invalid &&
+                              (place_no.dirty || place_no.touched)
+                          }"
+                        />
+                        <span
+                          class="invalid-feedback"
+                          *ngIf="
+                            place_no.invalid &&
+                            (place_no.dirty || place_no.touched)
+                          "
+                        >
+                          <p *ngIf="place_no.errors?.required">
+                            Place No. is required.
+                          </p>
+                          <p *ngIf="place_no.errors?.maxlength">
+                            Place No. must be at most 50 characters long.
+                          </p>
+                        </span>
                       </div>
                       <div class="form-group col-md-7">
                         <label for="inputState" class="heading">Street</label>
-                        <input type="text" class="form-control" formControlName="street" placeholder="eg. Near Reliance Circle" [ngClass]="{'is-invalid':street.invalid && (street.dirty || street.touched)}">
-                        <span class="invalid-feedback" *ngIf="street.invalid && (street.dirty || street.touched)">
-                          <p *ngIf="street.errors?.maxlength">Street must be at most 50 characters long.</p>
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="street"
+                          placeholder="eg. Near Reliance Circle"
+                          [ngClass]="{
+                            'is-invalid':
+                              street.invalid && (street.dirty || street.touched)
+                          }"
+                        />
+                        <span
+                          class="invalid-feedback"
+                          *ngIf="
+                            street.invalid && (street.dirty || street.touched)
+                          "
+                        >
+                          <p *ngIf="street.errors?.maxlength">
+                            Street must be at most 100 characters long.
+                          </p>
                         </span>
                       </div>
                     </div>
                     <div class="form-group">
                       <label for="inputZip" class="heading">Landmark</label>
-                      <input type="text" class="form-control" formControlName="locality" placeholder="eg. Kudasan" [ngClass]="{'is-invalid':locality.invalid && (locality.dirty || locality.touched)}">
-                      <span class="invalid-feedback" *ngIf="locality.invalid && (locality.dirty || locality.touched)">
-                        <p *ngIf="locality.errors?.required">Landmark is required.</p>
-                        <p *ngIf="locality.errors?.maxlength">Landmark must be at most 50 characters long.</p>
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="locality"
+                        placeholder="eg. Kudasan"
+                        [ngClass]="{
+                          'is-invalid':
+                            locality.invalid &&
+                            (locality.dirty || locality.touched)
+                        }"
+                      />
+                      <span
+                        class="invalid-feedback"
+                        *ngIf="
+                          locality.invalid &&
+                          (locality.dirty || locality.touched)
+                        "
+                      >
+                        <p *ngIf="locality.errors?.required">
+                          Landmark is required.
+                        </p>
+                        <p *ngIf="locality.errors?.maxlength">
+                          Landmark must be at most 100 characters long.
+                        </p>
                       </span>
                     </div>
                     <div class="form-row">
                       <div class="form-group col-md-5">
                         <label for="inputCity" class="heading">City</label>
-                        <input type="text" class="form-control" formControlName="city" placeholder="eg. Gandhinagar" [ngClass]="{'is-invalid':city.invalid && (city.dirty || city.touched)}">
-                        <span class="invalid-feedback" *ngIf="city.invalid && (city.dirty || city.touched)">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="city"
+                          placeholder="eg. Gandhinagar"
+                          [ngClass]="{
+                            'is-invalid':
+                              city.invalid && (city.dirty || city.touched)
+                          }"
+                        />
+                        <span
+                          class="invalid-feedback"
+                          *ngIf="city.invalid && (city.dirty || city.touched)"
+                        >
                           <p *ngIf="city.errors?.required">City is required.</p>
-                          <p *ngIf="city.errors?.maxlength">City must be at most 50 characters long.</p>
+                          <p *ngIf="city.errors?.maxlength">
+                            City must be at most 50 characters long.
+                          </p>
                         </span>
                       </div>
                       <div class="form-group col-md-5">
                         <label for="inputState" class="heading">State</label>
-                        <input type="text" class="form-control" formControlName="state" [ngClass]="{'is-invalid':state.invalid && (state.dirty || state.touched)}">
-                        <span class="invalid-feedback" *ngIf="state.invalid && (state.dirty || state.touched)" >
-                          <p *ngIf="state.errors?.required">State is required.</p>
-                          <p *ngIf="state.errors?.maxlength">State must be at most 50 characters long.</p>
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="state"
+                          [ngClass]="{
+                            'is-invalid':
+                              state.invalid && (state.dirty || state.touched)
+                          }"
+                        />
+                        <span
+                          class="invalid-feedback"
+                          *ngIf="
+                            state.invalid && (state.dirty || state.touched)
+                          "
+                        >
+                          <p *ngIf="state.errors?.required">
+                            State is required.
+                          </p>
+                          <p *ngIf="state.errors?.maxlength">
+                            State must be at most 50 characters long.
+                          </p>
                         </span>
                       </div>
                       <div class="form-group col-md-2">
                         <label for="inputZip" class="heading">Zip</label>
-                        <input type="text" class="form-control" formControlName="pincode" placeholder="123456" [ngClass]="{'is-invalid':pincode.invalid && (pincode.dirty || pincode.touched)}">
-                        <span class="invalid-feedback" *ngIf="pincode.invalid && (pincode.dirty || pincode.touched)" >
-                          <p *ngIf="pincode.errors?.required">Pincode is required.</p>
-                          <p *ngIf="pincode.errors?.pattern">Pincode must contain digits only.</p>
-                          <p *ngIf="!pincode.errors?.pattern && (pincode.errors?.maxlength || pincode.errors?.minlength)">Pincode must be 6 digits long.</p>
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="pincode"
+                          placeholder="123456"
+                          [ngClass]="{
+                            'is-invalid':
+                              pincode.invalid &&
+                              (pincode.dirty || pincode.touched)
+                          }"
+                        />
+                        <span
+                          class="invalid-feedback"
+                          *ngIf="
+                            pincode.invalid &&
+                            (pincode.dirty || pincode.touched)
+                          "
+                        >
+                          <p *ngIf="pincode.errors?.required">
+                            Pincode is required.
+                          </p>
+                          <p *ngIf="pincode.errors?.pattern">
+                            Pincode must contain digits only.
+                          </p>
+                          <p
+                            *ngIf="
+                              !pincode.errors?.pattern &&
+                              (pincode.errors?.maxlength ||
+                                pincode.errors?.minlength)
+                            "
+                          >
+                            Pincode must be 6 digits long.
+                          </p>
                         </span>
                       </div>
                     </div>
                   </div>
-  
-                  <button type="submit" *ngIf="toUpdate" class="btn btn-primary mt-3 mr-3 mb-5 w-100" [disabled]="disableBtn">Submit</button>
+
+                  <button
+                    type="submit"
+                    *ngIf="toUpdate"
+                    class="btn btn-primary mt-3 mr-3 mb-5 w-100"
+                    [disabled]="disableBtn"
+                  >
+                    Submit
+                  </button>
                 </form>
               </div>
             </div>

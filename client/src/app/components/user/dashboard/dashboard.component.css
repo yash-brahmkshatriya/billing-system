@@ -1,29 +1,75 @@
 .buttons {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: row;
 }
 .fa {
-    font-size: xx-large;
+  font-size: xx-large;
 }
 .btn {
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
 }
 .cntCircle {
-    border: 16px solid #c2bf00; 
-    border-radius: 50%;
-    width: 350px;
-    height: 350px;
-    font-size: 30px;
-    text-align: center;
+  animation: blink 6s infinite;
+  border: 16px solid;
+  border-radius: 50%;
+  width: 350px;
+  height: 350px;
+  font-size: 30px;
+  text-align: center;
 }
 .cnt {
-    color: #ad0000 !important;
-    font-weight: bold !important;
+  animation: blink 6s infinite;
+  font-weight: bold !important;
 }
-.dash-container{
-    padding: 7%;
-    min-height: 85vh;
+.dash-container {
+  padding: 7%;
+  min-height: 100vh;
+}
+@media (max-width: 800px) {
+  .buttons {
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+  .cntCircle {
+    width: 300px;
+    height: 300px;
+  }
+  .cntCircle .display-4 {
+    font-size: 45px;
+  }
+  .btn {
+    width: 100px;
+    height: 100px;
+  }
+}
+@keyframes blink {
+  0% {
+    border-color: crimson;
+    color: crimson;
+  }
+  20% {
+    border-color: orange;
+    color: orange;
+  }
+  40% {
+    border-color: goldenrod;
+    color: goldenrod;
+  }
+  60% {
+    border-color: green;
+    color: green;
+  }
+  80% {
+    border-color: DarkBlue;
+    color: darkblue;
+  }
+  100% {
+    border-color: purple;
+    color: purple;
+  }
 }
