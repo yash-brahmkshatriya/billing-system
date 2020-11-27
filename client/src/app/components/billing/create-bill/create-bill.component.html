@@ -146,7 +146,7 @@
           Items
         </h1>
         <div style="overflow-x: auto">
-          <table class="table table-stripped table-responsive">
+          <table class="table table-striped table-responsive-lg">
             <thead class="thead-dark">
               <tr>
                 <th scope="col">#</th>
@@ -158,86 +158,94 @@
                 <th scope="col"></th>
               </tr>
             </thead>
-            <tbody
-              formArrayName="items"
-              *ngFor="
-                let item of billForm.get('items')['controls'];
-                let i = index
-              "
-            >
-              <tr [formGroupName]="i">
-                <th scope="row" class="heading">{{ i + 1 }}</th>
-                <td style="width: 48%">
-                  <textarea
-                    formControlName="description"
-                    class="form-control"
-                    rows="1"
-                  ></textarea>
-                  <!-- <span class="invalid-feedback" *ngIf="billform.items[i].description.invalid && (billform.items[i].description.touched || billform.items[i].description.dirty)">
+            <tbody>
+              <ng-container
+                formArrayName="items"
+                *ngFor="
+                  let item of billForm.get('items')['controls'];
+                  let i = index
+                "
+              >
+                <tr [formGroupName]="i">
+                  <th scope="row" class="heading">{{ i + 1 }}</th>
+                  <td style="width: 48%">
+                    <textarea
+                      formControlName="description"
+                      class="form-control"
+                      rows="1"
+                    ></textarea>
+                    <!-- <span class="invalid-feedback" *ngIf="billform.items[i].description.invalid && (billform.items[i].description.touched || billform.items[i].description.dirty)">
                   <p *ngIf="billform.items[i].description.errors?.required">Description is required.</p>
                 </span> -->
-                </td>
-                <td style="width: 10%">
-                  <input
-                    type="number"
-                    formControlName="qty"
-                    class="form-control"
-                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-                  />
-                </td>
-                <td style="width: 7%">
-                  <input
-                    type="text"
-                    formControlName="unit"
-                    class="form-control"
-                    maxlength="10"
-                  />
-                </td>
-                <td style="width: 25%">
-                  <div class="form-row" style="font-size: large">
-                    <div class="form-row col-md-4">
-                      <input
-                        type="number"
-                        formControlName="rate"
-                        class="form-control"
-                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-                      />
+                  </td>
+                  <td style="width: 10%">
+                    <input
+                      type="number"
+                      formControlName="qty"
+                      class="form-control"
+                      oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                    />
+                  </td>
+                  <td style="width: 7%">
+                    <input
+                      type="text"
+                      formControlName="unit"
+                      class="form-control"
+                      maxlength="10"
+                    />
+                  </td>
+                  <td style="width: 25%">
+                    <div class="form-row" style="font-size: large">
+                      <div class="form-row col-md-4">
+                        <input
+                          type="number"
+                          formControlName="rate"
+                          class="form-control"
+                          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                        />
+                      </div>
+                      <div class="form-row col-md-1"></div>
+                      <div
+                        class="form-row col-md-2"
+                        style="align-items: center"
+                      >
+                        per
+                      </div>
+                      <div class="form-row col-md-3">
+                        <input
+                          type="number"
+                          formControlName="per_unit"
+                          class="form-control"
+                          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                        />
+                      </div>
+                      <div
+                        class="form-row col-md-2"
+                        style="align-items: center"
+                      >
+                        {{ item.controls.unit.value }}
+                      </div>
                     </div>
-                    <div class="form-row col-md-1"></div>
-                    <div class="form-row col-md-2" style="align-items: center">
-                      per
-                    </div>
-                    <div class="form-row col-md-3">
-                      <input
-                        type="number"
-                        formControlName="per_unit"
-                        class="form-control"
-                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-                      />
-                    </div>
-                    <div class="form-row col-md-2" style="align-items: center">
-                      {{ item.controls.unit.value }}
-                    </div>
-                  </div>
-                </td>
-                <td style="width: 10%">
-                  <input
-                    type="number"
-                    formControlName="amt"
-                    class="form-control"
-                    disabled
-                  />
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    class="btn btn-outline-danger"
-                    (click)="removeItem(i)"
-                  >
-                    Remove
-                  </button>
-                </td>
-              </tr>
+                  </td>
+                  <td style="width: 10%">
+                    <input
+                      type="number"
+                      formControlName="amt"
+                      class="form-control"
+                      disabled
+                    />
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      class="btn btn-outline-danger"
+                      (click)="removeItem(i)"
+                    >
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+              </ng-container>
             </tbody>
           </table>
         </div>
